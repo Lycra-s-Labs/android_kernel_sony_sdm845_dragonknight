@@ -1,0 +1,26 @@
+tasks:
+  - init: |
+      # Set Malaysia timezone
+      sudo ln -sf /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
+
+      # Set SWAP to 5GiB
+      sudo fallocate -l 5G /swapfile
+      sudo chmod 600 /swapfile
+      sudo mkswap /swapfile
+      sudo swapon /swapfile
+
+      # Clean useless files
+      sudo rm -rf "/usr/local/share/boost"
+      sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+
+      # Initialize compilation environment
+      sudo apt-get update
+      sudo apt-get install -y git automake flex lzop bison gperf build-essential zip curl zlib1g-dev g++-multilib gcc-multilib libxml2-utils bzip2 libbz2-dev libbz2-1.0 libghc-bzlib-dev squashfs-tools pngcrush schedtool dpkg-dev liblz4-tool make optipng maven libssl-dev pwgen libswitch-perl policycoreutils minicom libxml-sax-base-perl libxml-simple-perl bc libc6-dev-i386 libx11-dev lib32z-dev libgl1-mesa-dev xsltproc unzip device-tree-compiler python3 ccache git-lfs gnupg imagemagick libelf-dev libncurses5-dev libsdl1.2-dev rsync adb fastboot libstdc++6
+      
+      # Get Toolchain
+      git clone https://github.com/kdrag0n/proton-clang.git --depth 1 ~/toolchain/clang
+      git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git --depth=1 ~/toolchain/aarch64-linux-android-4.9
+      git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9.git --depth=1 ~/toolchain/arm-linux-androideabi-4.9
+
+      #Repo root (git clone)
+      git clone https://github.com/Firxp011/kernelcompiler.git --depth 1 $GITPOD_REPO_ROOT/kernelcompiler
